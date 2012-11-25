@@ -1,0 +1,296 @@
+The Go Standard Library 
+Part 1: I/O
+
+# Go is a general-purpose language that bridges the gap between efficient
+# statically typed languages and productive dynamic language. But it’s not just
+# the language that makes Go special – Go has broad and consistent standard
+# libraries and powerful but simple tools.
+# 
+# This talk gives an introduction to Go, followed by a tour of some real
+# programs that demonstrate the power, scope, and simplicity of the Go
+# programming environment.
+
+Fabrizio Milo
+Los Angeles Meetup Group -  November 20 2012 
+@fabmilo
+mistobaan@gmail.com
+http://www.meetup.com/Los-Angeles-Gophers/
+
+* What will be covered:
+- io
+- os 
+- ioutils
+- bufio
+- bytes
+- encoding/binary
+- gzip
+
+
+* Standard library
+
+* io
+
+The `io` package provides fundamental I/O interfaces:
+
+- *Reader* 
+    type Reader interface {
+        Read(p []byte) (n int, err error) 
+    }
+
+.link http://golang.org/pkg/io/#Reader
+
+- *Writer* 
+    type Writer interface {
+        Write(p []byte) (n int, err error) 
+    }
+
+.link http://golang.org/pkg/io/#Writer
+
+* io
+
+- *ReaderWriter* 
+    type ReadWriter interface {
+       Reader  
+       Writer
+    }
+
+.link http://golang.org/pkg/io/#ReadWriter
+
+* Examples
+
+- *os.File _(io.ReadWriter)_
+- *bytes.Buffer _(io.ReadWriter)_
+- *bufio.Writer _(io.Writer)_
+- *bufio.Reader _(io.Reader)_
+- *string.Reader _(io.Reader)_
+
+.link http://golang.org/pkg/bytes/#Buffer
+.link http://golang.org/pkg/bufio/#Writer
+.link http://golang.org/pkg/bufio/#Reader
+.link http://golang.org/pkg/strings/#Reader
+
+
+* os
+
+To open a file:
+
+.play go-stdlib-part-1/simple_read_file.go  /START1/,/STOP1/
+
+* os
+
+Read Contents:
+
+.code go-stdlib-part-1/simple_read_file.go  /START2/,/STOP2/
+
+
+* io/ioutil
+
+to read the whole file: 
+
+   func ReadFile(filename string) ([]byte, error) // (does not return EOF)
+
+.link http://golang.org/pkg/io/ioutil/#ReadFile
+
+
+   func WriteFile(filename string) ([]byte, error)
+
+.link http://golang.org/pkg/io/ioutil/#WriteFile
+
+* io/ioutil
+
+Handy Variables: 
+
+     util.Discard
+
+.link http://golang.org/pkg/io/ioutil/#Discard
+
+Example:
+
+.play go-stdlib-part-1/copy_trash.go /START/,/STOP/
+
+* os 
+
+other handy utilites:
+
+- os.ExpandEnv( )
+
+.code go-stdlib-part-1/simple_read_file.go  /{path/,/path}/
+
+.link http://golang.org/pkg/os#ExpandEnv
+
+* os
+
+- os.Args
+- os.Stdin, os.Stdout, os.Stderr
+
+* os/user
+
+Get the current user info:
+
+.play go-stdlib-part-1/user_info.go
+
+
+* os 
+
+- ExpandEnv(string)
+- Getpagesize()
+- Hostname()
+- Pipe()
+- StartProcess()
+
+    func StartProcess(name string, argv []string, attr *ProcAttr) (*Process, error)
+
+* path/filepath
+
+- Clean(path string)
+- Glob(pattern string)
+- Walk()
+
+.link http://golang.org/pkg/path/filepath/
+
+* os
+
+How to check if a path exists ?
+
+- No default way
+
+.code go-stdlib-part-1/simple_read_file.go  /<exists/,/exists>/
+
+* bufio
+
+    func NewReader(rd io.Reader) *Reader
+   
+Example: 
+
+.play go-stdlib-part-1/console1.go /START/,/STOP/
+
+
+* bufio.Reader
+
+Peek:  
+
+    func (b *Reader) Peek(n int) ([]byte, error)
+
+ReadByte:
+
+    func (b *Reader) ReadByte() (c byte, err error)
+
+UnreadByte:
+
+    func (*Reader) UnreadByte()
+
+.link http://golang.org/pkg/bufio
+
+* bufio.Reader
+
+notice that bufio.Reader 
+
+    //bufio
+    type Reader struct {
+        // contains filtered or unexported fields
+    }
+
+is a *different* type from io.Reader:
+
+    // io    
+    type Reader interface {
+        Read(p []byte) (n int, err error)
+    } 
+
+* bufio.Writer
+
+Pay attention to flush:
+
+    func (b *Writer) Flush() error
+
+Example 1:
+
+.play go-stdlib-part-1/console-progress.go /START/,/STOP/ 
+
+* bufio.Writer
+
+Example 2:
+
+  f := bufio.NewWriter(os.Stdout)
+  defer f.Flush() 
+  f.Write(b)
+
+    
+.link http://golang.org/pkg/bufio#Writer.Flush
+
+* bytes
+
+New Buffer from Bytes:
+
+    func NewBuffer(buf []byte) *Buffer
+
+New Buffer String:
+    
+    func NewBufferString(s string) *Buffer
+
+* Caveats using the buffers
+
+What's wrong with this code ?:
+
+.play go-stdlib-part-1/double-buffer-caveats.go /START1/,/START2/
+
+* Caveats using the buffers
+
+What's wrong with this code ?:
+
+.play go-stdlib-part-1/double-buffer-caveats-2.go /START1/,/START2/
+
+More Caveats:
+
+    func ReadFull(r Reader, buf []byte) (n int, err error)
+
+
+* gzip
+    "compress/gzip"
+    reader, err = gzip.NewReader(response.Body)
+    defer reader.Close()
+
+* gzip
+
+Example: Reading from a string and then compressing it
+
+.code go-stdlib-part-1/gzip-example.go /WRITE1/,/WRITE2/  
+
+* gzip
+
+Reverse Example: uncompressing a string
+
+.play go-stdlib-part-1/gzip-example.go /READ1/,/READ2/  
+
+* encoding/binary
+    
+    func Read(r io.Reader, order ByteOrder, data interface{}) error
+
+.link http://golang.org/pkg/encoding/binary/#Read
+
+* encoding/binary
+
+    var f float32
+    err = binary.Read(fd, binary.BigEndian, &f)
+    fmt.Println(err, f)
+
+* encoding/binary
+ 
+ Note the *interface{}* of the last type
+ 
+    func Read(r io.Reader, order ByteOrder, data interface{}) error
+    
+* encoding/binary
+ 
+You can Read entire structures from a stream:
+ 
+.play go-stdlib-part-1/binary_struct.go /START/,/END/
+ 
+No worries about padding & byte alignment, is all taken care of
+Good post on byte endianess: 
+
+.link http://commandcenter.blogspot.com/2012/04/byte-order-fallacy.html
+            
+
+    
+ 
