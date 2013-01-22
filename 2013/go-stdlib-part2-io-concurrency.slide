@@ -1,0 +1,120 @@
+The Go Standard Library 
+Part 1: I/O
+
+# Go is a general-purpose language that bridges the gap between efficient
+# statically typed languages and productive dynamic language. But it’s not just
+# the language that makes Go special – Go has broad and consistent standard
+# libraries and powerful but simple tools.
+# 
+# This talk gives an introduction to Go, followed by a tour of some real
+# programs that demonstrate the power, scope, and simplicity of the Go
+# programming environment.
+
+Fabrizio Milo
+Los Angeles Meetup Group -  January 22 2013
+@fabmilo
+mistobaan@gmail.com
+http://www.meetup.com/Los-Angeles-Gophers/
+
+* What we covered last time:
+- io
+- os 
+- ioutils
+- bufio
+- bytes
+- encoding/binary
+- compress/gzip
+
+* What will be covered in this session:
+
+- function literals
+
+- goroutines
+
+- select
+
+- channels
+
+- encoding/gob
+
+* Function Literals
+
+- Functions are first class citizen in go and they are type safe 
+
+.play go-stdlib-part-2/function_literals.go  /START1/,/END1/
+
+- and you can manipulate them as any other type
+
+.play go-stdlib-part-2/function_literals.go  /START2/,/END2/
+
+* Function Literals Gotchas
+
+What do you think the output will be ?
+
+.play go-stdlib-part-2/function_literal_gotcha.go  /START1/,/END1/
+
+How can we fix it ?
+
+* Function Literals Gotchas
+
+Function Factory
+
+.play go-stdlib-part-2/function_literal_gotcha_fix.go  /START2/,/END2/
+
+.play go-stdlib-part-2/function_literal_gotcha_fix.go  /START1/,/END1/
+
+
+* Concurrency
+
+Do not communicate by sharing memory; 
+instead, share memory by communicating.
+
+* Go Routines
+
+It is lightweight, costing little more than the allocation of stack space. 
+
+And the stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required
+
+runtime.GOMAXPROCS(runtime.NumCPU())
+
+* Select
+
+* Channels
+
+* io.MultiWrite
+
+* encoding/gob
+
+.link http://golang.org/pkg/encoding/gob/
+.link http://golang.org/doc/articles/gobs_of_data.html
+
+
+* https://github.com/eknkc/dateformat/
+
+* sync WaitGroup
+
+.link http://golang.org/pkg/sync/#WaitGroup
+
+  How to wait for all the goroutines to finish ?
+
+  sync.WaitGroup
+
+.code go-stdlib-part-1/wait_group_simple.go  /START2/,/STOP2/
+
+- What went wrong ?
+
+.code go-stdlib-part-1/wait_group_simple_fix.go  /START2/,/STOP2/
+
+* runtime
+
+  func MaxParallelism() int {
+      maxProcs := runtime.GOMAXPROCS(0)
+          numCPU := runtime.NumCPU()
+	      if maxProcs < numCPU {
+	              return maxProcs
+		          }
+			      return numCPU
+			      }
+
+
+* Thanks !
