@@ -26,6 +26,8 @@ http://www.meetup.com/Los-Angeles-Gophers/
 - encoding/binary
 - compress/gzip
 
+.link http://localhost:3999/2012/go-stdlib-part-1-io.slide#1
+
 * What will be covered in this session:
 
 - function literals
@@ -40,9 +42,11 @@ http://www.meetup.com/Los-Angeles-Gophers/
 
 * Function Literals
 
+* Function Literals
+
 - Functions are first class citizen in go and they are type safe 
 
-.play go-stdlib-part-2/function_literals.go  /START1/,/END1/
+.code go-stdlib-part-2/function_literals.go  /START1/,/END1/
 
 - and you can manipulate them as any other type
 
@@ -65,15 +69,12 @@ Function Factory
 .play go-stdlib-part-2/function_literal_gotcha_fix.go  /START1/,/END1/
 
 
-* Concurrency: Do not communicate by sharing memory; instead, share memory by communicating.
+//* Concurrency: Do not communicate by sharing memory; instead, share memory by communicating.
 
+* Go Routines
 * Go Routines
 
 - It is lightweight, costing little more than the allocation of stack space. 
-
-- The stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required
-
-- They are *NOT* threads
 
 * Go Routines
 
@@ -85,31 +86,96 @@ Easy right ?
 
 .play go-stdlib-part-2/main_simple.go
 
+* 
+.image wat_grande.jpg 712 1000 
+
+* WAT
+
+Watch it is hilarious
+
+.link https://www.destroyallsoftware.com/talks/wat
+
+- ALL the gorutines are terminated when the main goroutine exits
+
+- The GO statement returns immediately
+
+* Goroutines
+
+.play go-stdlib-part-2/main_simple_fix.go
+
+THERE I FIX IT (for now)
+
+* Goroutines
+
+- It is lightweight, costing little more than the allocation of stack space. 
+
+- The stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required
+
+- They are *NOT* threads
 
 * You can have 1000 goroutines running on one thread  
 
 * You don't believe it ?
 
-.image ./nopanic.jpg
+.image ./nopanic.jpg  712 1000
 
 * Go Routines
 
 .play go-stdlib-part-2/go_1k_one_thread.go  /START1/,/END1/
 
+* Go Routines
+
 - How do I know there are 1000 goroutines ?
 
+- How to use all the 64 processors of my machine ?
+
+* package runtime
+
+* runtime
+
+.link http://golang.org/pkg/runtime/
+
+.play go-stdlib-part-2/max_procs.go   /START1/,/END1/
+
+
+* runtime.NumGoroutine
+
+- How do I know there are 1000 goroutines ?
+
+.link http://golang.org/pkg/runtime/#NumGoroutine
+
+.play go-stdlib-part-2/go_1k_one_thread_runtime.go   /START1/,/END1/
+
+* Go Routines
+
+As you saw the 1000 routines spinnig block quite heavely
+
+How can we yield ?
+
+* runtime.Gosched
+
+Explictly yield the routine 
+
+.link http://golang.org/pkg/runtime/#Gosched
+
+.play go-stdlib-part-2/go_1k_one_thread_yield.go   /START1/,/END1/
+
+* Go Routines
 
 How to wait for all the goroutines to finish ?
+
+Two main ways (other than an ininite loop):
 
 - sync.WaitGroups
 
 - channels
 
-* sync WaitGroup
-
-.link http://golang.org/pkg/sync/#WaitGroup
+* package sync
 
 * sync.WaitGroup
+
+
+.link http://golang.org/pkg/sync/#WaitGroup
 
 .play go-stdlib-part-2/wait_group_simple.go  /START1/,/END1/
 
@@ -134,16 +200,7 @@ Good Practice is to always defer to signaling the Done
 
 .play go-stdlib-part-2/wait_group_panic.go  /START1/,/STOP1/
 
-* runtime
-
-.link http://golang.org/pkg/runtime/#GOMAXPROCS
-
-.play go-stdlib-part-2/max_procs.go   /START1/,/END1/
-
-explictly yield
-.link http://golang.org/pkg/runtime/#GoSched
-.link http://golang.org/pkg/runtime/#NumGoroutine
-
+* Channels
 * Channels
 
 We already seen some channels example but never treated them 
@@ -178,12 +235,14 @@ No panic, and let's analyze the stack
            created by runtime.main
                /usr/local/Cellar/go/1.0.3/src/pkg/runtime/proc.c:221
 
-Just out of curiosity the second gorutine is the one that launches the 
+Just out of curiosity the second goroutine is the one that launches the main function
 
 .link http://golang.org/src/pkg/runtime/proc.c#221
 
-- The problem is that we are in a deadlock state
+Of course the problem is that we are in a deadlock state
 	       
+How can we fix it ?
+
 * Channels Fix
 We need to run it in another goroutine
 
@@ -241,34 +300,9 @@ First method is of course:
 
 .link http://golang.org/pkg/time#Sleep
 
-What? Duration ?
-
-* Time Duration
-
-.link http://golang.org/pkg/time#Duration
-
-   type Duration int64
-
-Time duration is an int64 but we can't do:
-
-.play go-stdlib-part-2/time_sleep.go
-
-
 * Select
 
-* io.MultiWrite
 
-* encoding/gob
-
-.link http://golang.org/pkg/encoding/gob/
-.link http://golang.org/doc/articles/gobs_of_data.html
-
-
-* https://github.com/eknkc/dateformat/
-
-* Debugging Tricks
-
-- SIGQUIT
-- gdb
+* Exercise
 
 * Thanks !

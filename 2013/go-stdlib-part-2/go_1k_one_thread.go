@@ -12,7 +12,7 @@ func main() {
 			}
 		}()
 	}
-	var end int
-	fmt.Scanf("Wait For It:%d", &end)
+
+	for {}
 	// END1 OMIT
 }
