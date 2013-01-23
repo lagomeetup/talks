@@ -9,7 +9,7 @@ import (
 func MaxParallelism() int {
 	maxProcs := runtime.GOMAXPROCS(0)
 	numCPU := runtime.NumCPU()
-	if maxProcs < numCPU {
+	if maxProcs > numCPU {
 		return maxProcs
 	}
 	return numCPU
@@ -17,5 +17,6 @@ func MaxParallelism() int {
 // END1 OMIT
 
 func main() {
+	runtime.GOMAXPROCS(MaxParallelism())
 	fmt.Printf ("Parallel unit: %d\n",MaxParallelism())
 }
