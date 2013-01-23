@@ -1,5 +1,5 @@
 The Go Standard Library 
-Part 1: I/O
+Part 2: I/O & Concurrency
 
 # Go is a general-purpose language that bridges the gap between efficient
 # statically typed languages and productive dynamic language. But it’s not just
@@ -13,8 +13,9 @@ Part 1: I/O
 Fabrizio Milo
 Los Angeles Meetup Group -  January 22 2013
 @fabmilo
-mistobaan@gmail.com
+lagomeetup@gmail.com
 http://www.meetup.com/Los-Angeles-Gophers/
+
 
 * What we covered last time:
 - io
@@ -31,9 +32,9 @@ http://www.meetup.com/Los-Angeles-Gophers/
 
 - goroutines
 
-- select
-
 - channels
+
+- select
 
 - encoding/gob
 
@@ -59,27 +60,201 @@ How can we fix it ?
 
 Function Factory
 
-.play go-stdlib-part-2/function_literal_gotcha_fix.go  /START2/,/END2/
+.code go-stdlib-part-2/function_literal_gotcha_fix.go  /START2/,/END2/
 
 .play go-stdlib-part-2/function_literal_gotcha_fix.go  /START1/,/END1/
 
 
-* Concurrency
-
-Do not communicate by sharing memory; 
-instead, share memory by communicating.
+* Concurrency: Do not communicate by sharing memory; instead, share memory by communicating.
 
 * Go Routines
 
-It is lightweight, costing little more than the allocation of stack space. 
+- It is lightweight, costing little more than the allocation of stack space. 
 
-And the stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required
+- The stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required
 
-runtime.GOMAXPROCS(runtime.NumCPU())
+- They are *NOT* threads
 
-* Select
+* Go Routines
+
+How to launch one
+
+    go <functionName>
+
+Easy right ?
+
+.play go-stdlib-part-2/main_simple.go
+
+
+* You can have 1000 goroutines running on one thread  
+
+* You don't believe it ?
+
+.image ./nopanic.jpg
+
+* Go Routines
+
+.play go-stdlib-part-2/go_1k_one_thread.go  /START1/,/END1/
+
+- How do I know there are 1000 goroutines ?
+
+
+How to wait for all the goroutines to finish ?
+
+- sync.WaitGroups
+
+- channels
+
+* sync WaitGroup
+
+.link http://golang.org/pkg/sync/#WaitGroup
+
+* sync.WaitGroup
+
+.play go-stdlib-part-2/wait_group_simple.go  /START1/,/END1/
+
+What went wrong ?
+
+* sync.WaitGroup
+
+The variable is not closed
+
+.play go-stdlib-part-2/wait_group_simple_fix.go  /START1/,/STOP1/
+
+
+* sync.WaitGroup
+
+What can we improve ?
+
+.play go-stdlib-part-2/wait_group_simple_fix.go  /START1/,/STOP1/
+
+* sync.WaitGroup
+
+Good Practice is to always defer to signaling the Done  
+
+.play go-stdlib-part-2/wait_group_panic.go  /START1/,/STOP1/
+
+* runtime
+
+.link http://golang.org/pkg/runtime/#GOMAXPROCS
+
+.play go-stdlib-part-2/max_procs.go   /START1/,/END1/
+
+explictly yield
+.link http://golang.org/pkg/runtime/#GoSched
+.link http://golang.org/pkg/runtime/#NumGoroutine
 
 * Channels
+
+We already seen some channels example but never treated them 
+
+to create a channel:
+
+  mychan := make(chan <type>, <size>)
+   
+What does it mean <size> ?
+
+Let's see an example
+
+.play go-stdlib-part-2/channel_simple.go   /START1/,/END1/
+
+* 
+
+.image ./panic.jpg
+
+* 
+No panic, and let's analyze the stack
+
+.image ./nopanic.jpg
+
+* Stack Trace:
+
+       throw: all goroutines are asleep - deadlock!
+
+       goroutine 1 [chan send]:
+           main.main()
+               [...] channel_simple.go:10+0x51
+       goroutine 2 [syscall]:
+           created by runtime.main
+               /usr/local/Cellar/go/1.0.3/src/pkg/runtime/proc.c:221
+
+Just out of curiosity the second gorutine is the one that launches the 
+
+.link http://golang.org/src/pkg/runtime/proc.c#221
+
+- The problem is that we are in a deadlock state
+	       
+* Channels Fix
+We need to run it in another goroutine
+
+.play go-stdlib-part-2/channel_simple_fix.go   /START1/,/END1/
+
+* Channels  with 1 element 
+
+We consume the first but not the second
+
+.play go-stdlib-part-2/channel_one.go   /START1/,/END1/
+
+* Channels 
+
+What happens if we close a channel before consuming it ?
+
+.play go-stdlib-part-2/channel_read_on_close.go   /START1/,/END1/
+
+It returns the default value 
+
+Testing it with string ...
+
+* Channels
+
+How to differentiate the two cases ?
+
+.play go-stdlib-part-2/channel_read_on_close_other.go   /START1/,/END1/
+
+Channel has an alternative sintax
+
+* Channels gotchas
+
+.play go-stdlib-part-2/channel_reference.go   /START1/,/END1/
+
+* Channels gotchas
+
+Pay attention if the channel's element is not a primitive or an immutable object (i.e. string) 
+
+This Channel copies the *entire* struct 
+
+.play go-stdlib-part-2/channel_copy.go   /START1/,/END1/
+
+* Channels of Channels ?
+
+Because channel is a primitive you can pass channels around
+
+
+* Let' introduce another stdlib package !
+
+* time
+.link http://golang.org/pkg/time
+
+First method is of course:
+
+   time.Sleep(d Duration)
+
+.link http://golang.org/pkg/time#Sleep
+
+What? Duration ?
+
+* Time Duration
+
+.link http://golang.org/pkg/time#Duration
+
+   type Duration int64
+
+Time duration is an int64 but we can't do:
+
+.play go-stdlib-part-2/time_sleep.go
+
+
+* Select
 
 * io.MultiWrite
 
@@ -91,30 +266,9 @@ runtime.GOMAXPROCS(runtime.NumCPU())
 
 * https://github.com/eknkc/dateformat/
 
-* sync WaitGroup
+* Debugging Tricks
 
-.link http://golang.org/pkg/sync/#WaitGroup
-
-  How to wait for all the goroutines to finish ?
-
-  sync.WaitGroup
-
-.code go-stdlib-part-1/wait_group_simple.go  /START2/,/STOP2/
-
-- What went wrong ?
-
-.code go-stdlib-part-1/wait_group_simple_fix.go  /START2/,/STOP2/
-
-* runtime
-
-  func MaxParallelism() int {
-      maxProcs := runtime.GOMAXPROCS(0)
-          numCPU := runtime.NumCPU()
-	      if maxProcs < numCPU {
-	              return maxProcs
-		          }
-			      return numCPU
-			      }
-
+- SIGQUIT
+- gdb
 
 * Thanks !

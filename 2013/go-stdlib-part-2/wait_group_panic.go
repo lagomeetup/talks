@@ -9,10 +9,10 @@ func main() {
 	var wg sync.WaitGroup
 	for _, s := range V {
 		wg.Add(1)
-		go func(s string) { // HL
-			fmt.Println(s)
-			wg.Done()
-		}(s) // HL
+		go func(s string) { 
+			defer wg.Done() // HL
+			fmt.Printf(s)
+		}(s) 
 	}
 	wg.Wait()
 	// STOP1  OMIT
