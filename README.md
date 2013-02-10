@@ -1,4 +1,11 @@
 
+To View Online this Presentation go to:
+=======================================
+
+http://talks.godoc.org/github.com/lagomeetup/talks/2012/go-stdlib-part-1-io.slide#1
+http://talks.godoc.org/github.com/lagomeetup/talks/2013/go-stdlib-part2-io-concurrency.slide
+
+
 How to View the Presentation
 ============================
 
