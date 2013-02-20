@@ -5,6 +5,7 @@ import (
 	"reflect"
 )
 
+// START1 OMIT
 func meta(a interface{}) {
 	pt := reflect.TypeOf(a)
 	pv := reflect.ValueOf(a)
@@ -25,4 +26,5 @@ func main() {
     b := [3]interface{}{1,"IamString", struct { int }{0} }
 
     meta(b)
+// END1 OMIT
 }

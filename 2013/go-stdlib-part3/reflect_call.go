@@ -5,6 +5,7 @@ import (
 	"reflect"
 )
 
+// START1 OMIT
 type Person struct{}
 
 func (p *Person) Run() {
@@ -20,4 +21,5 @@ func doit(object interface{}, method interface{}) {
 func main() {
 	p := new(Person)
 	doit(p, (*Person).Run)
+	// END1 OMIT
 }
