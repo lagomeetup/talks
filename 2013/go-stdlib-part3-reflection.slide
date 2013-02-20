@@ -1,0 +1,356 @@
+The Go Standard Library 
+Part 3: Reflection
+
+Fabrizio Milo
+Los Angeles Meetup Group -  February 19 2013
+@fabmilo
+lagomeetup@gmail.com
+http://www.meetup.com/Los-Angeles-Gophers/
+
+
+* What we covered last time:
+
+- function literals
+
+- goroutines
+
+- channels
+
+- select
+
+* What will be covered in this session:
+
+- reflection
+
+* Reflection in GO
+
+* Reflection in GO
+
+.link http://golang.org/doc/articles/laws_of_reflection.html
+
+Reflection in computing is the ability of a program to examine its own structure, particularly through types
+
+.play go-stdlib-part3/reflection1.go
+
+* Interface
+
+- interface (value,type)
+- Type Assertion: 
+
+  type interface{}
+  var w io.Writer
+  w = r.(io.Writer)
+
+.link http://golang.org/pkg/reflect/#Type
+.link http://golang.org/pkg/reflect/#TypeOf
+
+.link http://golang.org/pkg/reflect/#Value
+.link http://golang.org/pkg/reflect/#ValueOf
+.link http://golang.org/pkg/reflect/#Value.Interface()
+
+
+* The Laws of  Reflection
+
+- Reflection goes from interface value to reflection object
+- Reflection goes from reflection object to interface value
+- To modify a reflection object, the value must be settable
+
+To check if a value is settable use Value.CanSet
+To get the element of a pointer use .Elem
+you need the pointer to modify the value
+
+* Structs
+
+Only Exported Fields of a Field are Settable
+
+- Settability is a property of a reflection Value, and not all reflection Values have it.
+
+What you can do:
+
+  - sending and receiving on channels
+  - allocating memory
+  - using slices and maps
+  - calling methods and functions
+
+* Iterate over Struct
+
+.play go-stdlib-part3/reflect_struct.go
+
+* Iterate over Array
+
+.play go-stdlib-part3/reflect_array.go
+
+* Iterate over Maps
+
+.play go-stdlib-part3/reflect_maps.go
+
+* Iterate over interfaces
+
+* Calling Methods
+
+.play go-stdlib-part3/reflect_call.go
+
+* Using Slices 
+
+.play go-stdlib-part3/reflect_slice.go
+
+* Using maps
+
+.play go-stdlib-part3/reflect_map.go
+
+
+
+* Function Literals Gotchas
+
+What do you think the output will be ?
+
+.play go-stdlib-part-2/function_literal_gotcha.go  /START1/,/END1/
+
+How can we fix it ?
+
+* Function Literals Gotchas
+
+Function Factory
+
+.code go-stdlib-part-2/function_literal_gotcha_fix.go  /START2/,/END2/
+
+.play go-stdlib-part-2/function_literal_gotcha_fix.go  /START1/,/END1/
+
+
+//* Concurrency: Do not communicate by sharing memory; instead, share memory by communicating.
+
+* Go Routines
+* Go Routines
+
+- It is lightweight, costing little more than the allocation of stack space. 
+
+* Go Routines
+
+How to launch one
+
+    go <functionName>
+
+Easy right ?
+
+.play go-stdlib-part-2/main_simple.go
+
+* 
+.image wat_grande.jpg 712 1000 
+
+* WAT
+
+Watch it is hilarious
+
+.link https://www.destroyallsoftware.com/talks/wat
+
+- ALL the gorutines are terminated when the main goroutine exits
+
+- The GO statement returns immediately
+
+* Goroutines
+
+.play go-stdlib-part-2/main_simple_fix.go
+
+THERE I FIX IT (for now)
+
+* Goroutines
+
+- It is lightweight, costing little more than the allocation of stack space. 
+
+- The stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required
+
+- They are *NOT* threads
+
+* You can have 1000 goroutines running on one thread  
+
+* You don't believe it ?
+
+.image ./nopanic.jpg  712 1000
+
+* Go Routines
+
+.play go-stdlib-part-2/go_1k_one_thread.go  /START1/,/END1/
+
+* Go Routines
+
+- How do I know there are 1000 goroutines ?
+
+- How to use all the 64 processors of my machine ?
+
+* package runtime
+
+* runtime
+
+.link http://golang.org/pkg/runtime/
+
+.play go-stdlib-part-2/max_procs.go   /START1/,/END1/
+
+
+* runtime.NumGoroutine
+
+- How do I know there are 1000 goroutines ?
+
+.link http://golang.org/pkg/runtime/#NumGoroutine
+
+.play go-stdlib-part-2/go_1k_one_thread_runtime.go   /START1/,/END1/
+
+* Go Routines
+
+As you saw the 1000 routines spinnig block quite heavely
+
+How can we yield ?
+
+* runtime.Gosched
+
+Explictly yield the routine 
+
+.link http://golang.org/pkg/runtime/#Gosched
+
+.play go-stdlib-part-2/go_1k_one_thread_yield.go   /START1/,/END1/
+
+* Go Routines
+
+How to wait for all the goroutines to finish ?
+
+Two main ways (other than an ininite loop):
+
+- sync.WaitGroups
+
+- channels
+
+* package sync
+
+* sync.WaitGroup
+
+
+.link http://golang.org/pkg/sync/#WaitGroup
+
+.play go-stdlib-part-2/wait_group_simple.go  /START1/,/END1/
+
+What went wrong ?
+
+* sync.WaitGroup
+
+The variable is not closed
+
+.play go-stdlib-part-2/wait_group_simple_fix.go  /START1/,/STOP1/
+
+
+* sync.WaitGroup
+
+What can we improve ?
+
+.play go-stdlib-part-2/wait_group_simple_fix.go  /START1/,/STOP1/
+
+* sync.WaitGroup
+
+Good Practice is to always defer to signaling the Done  
+
+.play go-stdlib-part-2/wait_group_panic.go  /START1/,/STOP1/
+
+* Channels
+* Channels
+
+We already seen some channels example but never treated them 
+
+to create a channel:
+
+  mychan := make(chan <type>, <size>)
+   
+What does it mean <size> ?
+
+Let's see an example
+
+.play go-stdlib-part-2/channel_simple.go   /START1/,/END1/
+
+* 
+
+.image ./panic.jpg
+
+* 
+No panic, and let's analyze the stack
+
+.image ./nopanic.jpg
+
+* Stack Trace:
+
+       throw: all goroutines are asleep - deadlock!
+
+       goroutine 1 [chan send]:
+           main.main()
+               [...] channel_simple.go:10+0x51
+       goroutine 2 [syscall]:
+           created by runtime.main
+               /usr/local/Cellar/go/1.0.3/src/pkg/runtime/proc.c:221
+
+Just out of curiosity the second goroutine is the one that launches the main function
+
+.link http://golang.org/src/pkg/runtime/proc.c#221
+
+Of course the problem is that we are in a deadlock state
+	       
+How can we fix it ?
+
+* Channels Fix
+We need to run it in another goroutine
+
+.play go-stdlib-part-2/channel_simple_fix.go   /START1/,/END1/
+
+* Channels  with 1 element 
+
+We consume the first but not the second
+
+.play go-stdlib-part-2/channel_one.go   /START1/,/END1/
+
+* Channels 
+
+What happens if we close a channel before consuming it ?
+
+.play go-stdlib-part-2/channel_read_on_close.go   /START1/,/END1/
+
+It returns the default value 
+
+Testing it with string ...
+
+* Channels
+
+How to differentiate the two cases ?
+
+.play go-stdlib-part-2/channel_read_on_close_other.go   /START1/,/END1/
+
+Channel has an alternative sintax
+
+* Channels gotchas
+
+.play go-stdlib-part-2/channel_reference.go   /START1/,/END1/
+
+* Channels gotchas
+
+Pay attention if the channel's element is not a primitive or an immutable object (i.e. string) 
+
+This Channel copies the *entire* struct 
+
+.play go-stdlib-part-2/channel_copy.go   /START1/,/END1/
+
+* Channels of Channels ?
+
+Because channel is a primitive you can pass channels around
+
+
+* Let' introduce another stdlib package !
+
+* time
+.link http://golang.org/pkg/time
+
+First method is of course:
+
+   time.Sleep(d Duration)
+
+.link http://golang.org/pkg/time#Sleep
+
+* Select
+
+
+* Exercise
+
+* Thanks !
