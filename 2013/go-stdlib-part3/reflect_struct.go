@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	// START1 OMIT
 	a := struct {
 		Something int `tag:"something"`
 		string  // Anonymous field
@@ -27,5 +28,5 @@ func main() {
 		fmt.Printf("\tIndex:%v\n", fdesc.Offset)
 		fmt.Printf("\tAnonymous:%v\n", fdesc.Anonymous)
     }
-
+	// END1 OMIT
 }
