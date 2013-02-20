@@ -141,3 +141,7 @@ How do you get the TypeOf(interface) ?
 
 .play go-stdlib-part3/reflect_chann.go /START1/,/END1/
 
+* Creating Structs
+
+.play go-stdlib-part3/reflect_new.go /START1/,/END1/
+
