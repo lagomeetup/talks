@@ -34,6 +34,6 @@ The full source code is located inside the subdirectories.
 
 The example should be fully functional.
 
-Enjoy! 
+Enjoy!!
 
 *The Los Angeles Go Meetup Team*
