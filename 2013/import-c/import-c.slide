@@ -1,0 +1,22 @@
+import "C"
+Calling C From Go
+20 Mar 2013
+Tags: go c
+
+Miki Tebeka
+Technical Lead, Adconion
+miki.tebeka@gmail.com
+http://mikitebeka.com
+@tebeka
+
+* Why C?
+
+After all we have Go, which is much better :)
+
+However, there is a *huge* volume of software written in C.
+We'd like to re-use it and not re-write it.
+
+
+* Minimal Example
+
+.play sqrt.go
