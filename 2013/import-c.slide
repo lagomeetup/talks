@@ -16,6 +16,17 @@ After all we have Go, which is much better :)
 However, there is a *huge* volume of software written in C.
 We'd like to re-use it and not re-write it.
 
+* import "C" (A.K.A cgo)
+
+Provides an easy bridge between Go and C
+
+Problems
+- Hard to find docs (see reference slide)
+- Pay attention to memory leaks
+- Compilation time grows
+
+Note that are other options (such as [[http://www.swig.org/][swig]])
+
 
 * Minimal Example
 
@@ -48,13 +59,33 @@ We'd like to re-use it and not re-write it.
 
 * Case Study - snowball
 
+- Port of [[http://snowball.tartarus.org/][snowball]] stemmer to Go
+- Had to flatten directories and rewrite #include
+- Wasn't that painful
+
+.play import-c/stem.go
+
+* snowball - imports and definition
+
+.code import-c/snowball.go  /START_IMPORT/,/END_IMPORT/
+
+* snowball - New and free
+
+.code import-c/snowball.go  /START_NEW/,/END_NEW/
 
 
-* Problems
+* snowball - Stem
 
-- Hard to find docs (see reference slide)
-- Pay attention to memory leaks
-- Compilation time grows
+snowball uses `sb_symbol*` for string
+
+.code import-c/snowball.go  /START_STEM/,/END_STEM/
+
+* snowball - List
+
+The list of languages is a static char* array with a `NULL` sentinal
+
+.code import-c/snowball.go  /START_LIST/,/END_LIST/
+
 
 * References
 
@@ -63,3 +94,8 @@ We'd like to re-use it and not re-write it.
 - [[http://golang.org/misc/cgo/][cgo examples]]
 - [[https://code.google.com/p/go-wiki/wiki/cgo][cgo wiki]]
 - [[http://stackoverflow.com/search?q=%5Bgo%5D+cgo][StackOverflow]]
+
+* Lets Hack!
+
+.image import-c/real-programmers.jpg 400 600
+
