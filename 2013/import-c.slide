@@ -59,6 +59,7 @@ Note that are other options (such as [[http://www.swig.org/][swig]])
 
 * Case Study - snowball
 
+- [[https://bitbucket.org/tebeka/snowball]]
 - Port of [[http://snowball.tartarus.org/][snowball]] stemmer to Go
 - Had to flatten directories and rewrite #include
 - Wasn't that painful
