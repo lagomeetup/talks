@@ -1,0 +1,147 @@
+The Go Standard Library 
+Part 3: Reflection
+
+Fabrizio Milo
+Los Angeles Meetup Group -  February 19 2013
+@fabmilo
+lagomeetup@gmail.com
+http://www.meetup.com/Los-Angeles-Gophers/
+
+
+* What we covered last time:
+
+- function literals
+
+- goroutines
+
+- channels
+
+- select
+
+* What will be covered in this session:
+
+- reflection
+
+* Reflection in GO
+
+* Reflection in GO
+
+.link http://golang.org/doc/articles/laws_of_reflection.html
+
+Reflection in computing is the ability of a program to examine its own structure, particularly through types
+
+* Reflection in GO
+
+What you can do:
+
+- iterate ove array, slices, maps and structs
+- calling methods and functions
+- sending and receiving on channels
+- allocating memory
+
+* The Laws of  Reflection
+
+- Reflection goes from interface value to reflection object
+- Reflection goes from reflection object to interface value
+- To modify a reflection object, the value must be settable
+
+* Interface
+
+An Interface has two components:
+
+- Type 
+.link http://golang.org/pkg/reflect/#Type
+
+- Value 
+.link http://golang.org/pkg/reflect/#Value
+
+
+* Interface
+
+from a variable we can extract the Type and the Value with
+
+  v := 10
+  T := reflect.TypeOf(v)
+  V := reflect.ValueOf(v)
+
+.link http://golang.org/pkg/reflect/#TypeOf
+.link http://golang.org/pkg/reflect/#ValueOf
+
+* Interface
+
+.play go-stdlib-part3/reflection1.go
+
+* 
+.image wat_grande.jpg 712 1000 
+
+* Interface
+
+.play go-stdlib-part3/reflect_kind.go /START1/,/END1/
+
+* What is Settability
+
+- Settability is a property of a reflection Value, and not all reflection Values have it.
+
+.play go-stdlib-part3/reflect_settable.go /START1/,/END1/
+.play go-stdlib-part3/reflect_settable.go /START2/,/END2/
+.play go-stdlib-part3/reflect_settable.go /START3/,/END3/
+
+
+* Iterate over Array
+
+.play go-stdlib-part3/reflect_array.go /START1/,/END1/
+
+* Iterate over Maps
+
+.play go-stdlib-part3/reflect_map.go /START1/,/END1/
+
+* Using Slices 
+
+.play go-stdlib-part3/reflect_slice.go /START1/,/END1/
+
+* Iterate over Struct
+
+Only Exported Fields of a Field are Settable
+
+.link http://golang.org/pkg/reflect/#StructField
+.link http://golang.org/pkg/reflect/#StructTag
+
+* Iterate over Struct
+
+.play go-stdlib-part3/reflect_struct.go /START1/,/END1/
+
+* Change Struct Fields
+
+.play go-stdlib-part3/reflect_change_struct.go /START1/,/END1/
+
+* Iterate over interfaces
+
+How do you get the TypeOf(interface) ?
+
+.code go-stdlib-part3/reflect_interface_wrong.go /START1/,/END1/
+.play go-stdlib-part3/reflect_interface_wrong.go /START2/,/END2/
+
+* Iterate over interfaces
+
+.link http://golang.org/pkg/reflect/#Method
+
+.code go-stdlib-part3/reflect_interface.go /START3/,/END3/
+.play go-stdlib-part3/reflect_interface.go /START2/,/END2/
+
+
+* Iterate over interfaces
+
+.play go-stdlib-part3/reflect_interface.go /START1/,/END1/
+
+* Calling Methods
+
+.play go-stdlib-part3/reflect_call.go /START1/,/END1/
+
+* Creating Channels
+
+.play go-stdlib-part3/reflect_chann.go /START1/,/END1/
+
+* Creating Structs
+
+.play go-stdlib-part3/reflect_new.go /START1/,/END1/
+
