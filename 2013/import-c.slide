@@ -1,0 +1,65 @@
+import "C"
+Calling C From Go
+20 Mar 2013
+Tags: go c
+
+Miki Tebeka
+Technical Lead, Adconion
+miki.tebeka@gmail.com
+http://mikitebeka.com
+@tebeka
+
+* Why C?
+
+After all we have Go, which is much better :)
+
+However, there is a *huge* volume of software written in C.
+We'd like to re-use it and not re-write it.
+
+
+* Minimal Example
+
+.play import-c/sqrt.go
+
+
+* Strings I
+
+.play import-c/str.go
+
+* Ahhhhhh!
+
+.image import-c/picard1.jpg 400 600
+
+* Strings II
+
+.play import-c/str2.go
+
+* But ...
+
+.image import-c/picard2.jpg 400 600
+
+* Strings III
+
+.play import-c/str3.go
+
+* Structs
+
+.play import-c/struct.go
+
+* Case Study - snowball
+
+
+
+* Problems
+
+- Hard to find docs (see reference slide)
+- Pay attention to memory leaks
+- Compilation time grows
+
+* References
+
+- [[http://golang.org/cmd/cgo/][cgo docs]]
+- [[http://golang.org/doc/articles/c_go_cgo.html][C? Go? Cgo!]]
+- [[http://golang.org/misc/cgo/][cgo examples]]
+- [[https://code.google.com/p/go-wiki/wiki/cgo][cgo wiki]]
+- [[http://stackoverflow.com/search?q=%5Bgo%5D+cgo][StackOverflow]]
