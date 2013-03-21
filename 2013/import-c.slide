@@ -77,7 +77,7 @@ Note that are other options (such as [[http://www.swig.org/][swig]])
 
 * Go Style Errors
 
-.play import-c/strtol.go
+.play import-c/err.go
 
 * Case Study - snowball
 
