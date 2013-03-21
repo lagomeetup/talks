@@ -20,12 +20,14 @@ We'd like to re-use it and not re-write it.
 
 Provides an easy bridge between Go and C
 
-Problems
+The Downside
 - Hard to find docs (see reference slide)
 - Pay attention to memory leaks
 - Compilation time grows
+- For C++ you need `extern`"C"` and C like wrapper
 
 Note that are other options (such as [[http://www.swig.org/][swig]])
+
 
 
 * Minimal Example
@@ -73,6 +75,10 @@ Note that are other options (such as [[http://www.swig.org/][swig]])
 
 .code import-c/callback/callback.go
 
+* Go Style Errors
+
+.play import-c/strtol.go
+
 * Case Study - snowball
 
 - [[https://bitbucket.org/tebeka/snowball]]
@@ -99,7 +105,7 @@ snowball uses `sb_symbol*` for string
 
 * snowball - List
 
-The list of languages is a static char* array with a `NULL` sentinal
+The list of languages is a `static`char*` array with a `NULL` sentinal
 
 .code import-c/snowball.go  /START_LIST/,/END_LIST/
 
