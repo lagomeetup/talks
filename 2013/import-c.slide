@@ -33,7 +33,7 @@ Note that are other options (such as [[http://www.swig.org/][swig]])
 .play import-c/sqrt.go
 
 
-* Strings I
+* Strings
 
 .play import-c/str.go
 
@@ -41,7 +41,7 @@ Note that are other options (such as [[http://www.swig.org/][swig]])
 
 .image import-c/picard1.jpg 400 600
 
-* Strings II
+* Strings
 
 .play import-c/str2.go
 
@@ -49,13 +49,29 @@ Note that are other options (such as [[http://www.swig.org/][swig]])
 
 .image import-c/picard2.jpg 400 600
 
-* Strings III
+* Strings
 
 .play import-c/str3.go
 
 * Structs
 
 .play import-c/struct.go
+
+* Calling Go from C
+
+`callback.c`
+
+.code import-c/callback/callback.c
+
+`callback.h`
+
+.code import-c/callback/callback.h
+
+* Calling Go from C
+
+`callback.go`
+
+.code import-c/callback/callback.go
 
 * Case Study - snowball
 
