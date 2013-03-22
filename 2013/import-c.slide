@@ -25,6 +25,7 @@ The Downside
 - Pay attention to memory leaks
 - Compilation time grows
 - For C++ you need `extern`"C"` and C like wrapper
+- Users need C compilers and libraries installed
 
 Note that are other options (such as [[http://www.swig.org/][swig]])
 
