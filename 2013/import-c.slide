@@ -1,6 +1,6 @@
 import "C"
 Calling C From Go
-20 Mar 2013
+27 Mar 2013
 Tags: go c
 
 Miki Tebeka
