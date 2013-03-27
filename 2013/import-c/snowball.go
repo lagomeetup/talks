@@ -42,7 +42,7 @@ func New(lang string) (*Stemmer, error) {
 		return nil, fmt.Errorf("can't create stemmer for lang %s", lang)
 	}
 
-	runtime.SetFinalizer(stmr, free)
+	runtime.SetFinalizer(stmr, free)  // Free C memory when GCed
 
 	return stmr, nil
 }
