@@ -26,6 +26,7 @@ The Downside
 - Compilation time grows
 - For C++ you need `extern`"C"` and C like wrapper
 - Users need C compilers and libraries installed
+- Cross compilation [[https://code.google.com/p/go/issues/detail?id=4714][does not work]]
 
 Note that are other options (such as [[http://www.swig.org/][swig]])
 
