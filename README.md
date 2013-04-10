@@ -1,11 +1,10 @@
-
 To View Online this Presentation go to:
 =======================================
 
-http://talks.godoc.org/github.com/lagomeetup/talks/2012/go-stdlib-part-1-io.slide#1
-http://talks.godoc.org/github.com/lagomeetup/talks/2013/go-stdlib-part2-io-concurrency.slide
-http://talks.godoc.org/github.com/lagomeetup/talks/2013/go-stdlib-part3-reflection.slide
-http://talks.godoc.org/github.com/lagomeetup/talks/2013/import-c.slide
+* http://talks.godoc.org/github.com/lagomeetup/talks/2012/go-stdlib-part-1-io.slide
+* http://talks.godoc.org/github.com/lagomeetup/talks/2013/go-stdlib-part2-io-concurrency.slide
+* http://talks.godoc.org/github.com/lagomeetup/talks/2013/go-stdlib-part3-reflection.slide
+* http://talks.godoc.org/github.com/lagomeetup/talks/2013/import-c.slide
 
 
 How to View the Presentation
