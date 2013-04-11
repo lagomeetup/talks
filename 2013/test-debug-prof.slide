@@ -1,0 +1,31 @@
+Testing, Debugging and Profiling
+27 Mar 2013
+Tags: go test profile debug
+
+Fabrizio Milo, Miki Tebeka
+@fabmilo @tebeka
+
+* Testing Recipe
+
+- Write `test_<module>.go`
+- With the same package as the one being tested
+- import [[http://golang.org/pkg/testing/][testing]]
+- Write `TestFoo(t`*testing.T)` functions
+- Run `go`test`-v`
+
+* math.go
+
+.code test-debug-prof/math.go
+
+* math_test.go
+
+.code test-debug-prof/math_test.go
+
+
+* References
+
+- [[http://golang.org/pkg/testing/][testing]]
+- [[http://golang.org/doc/code.html#Testing][Testing]] section in "How To Write Go Code"
+- [[https://bitbucket.org/tebeka/go2xunit][go2xunit]] Jenkins integration
+
+
