@@ -7,11 +7,15 @@ Fabrizio Milo, Miki Tebeka
 
 * Testing Recipe
 
-- Write `test_<module>.go`
+- Write `test_<module>.go` (discovery based test system)
 - With the same package as the one being tested
 - import [[http://golang.org/pkg/testing/][testing]]
 - Write `TestFoo(t`*testing.T)` functions
+- Use `init` for setup
+- Use `defer` for poor mans teardown (in *every* test function)
 - Run `go`test`-v`
+- Run `go`test`-run='.*Mul.*'`-v` to select tests
+- Read `go`help`testflag` output for more options
 
 * math.go
 
@@ -21,11 +25,24 @@ Fabrizio Milo, Miki Tebeka
 
 .code test-debug-prof/math_test.go
 
+* Table Driven Testing
 
-* References
+TBD (Miki)
+
+* Parallel Execution
+
+TBD (Miki)
+
+* Benchmarks
+
+TBD (Miki)
+
+
+* Testing References
 
 - [[http://golang.org/pkg/testing/][testing]]
 - [[http://golang.org/doc/code.html#Testing][Testing]] section in "How To Write Go Code"
+- [[http://labix.org/gocheck][gocheck]]
 - [[https://bitbucket.org/tebeka/go2xunit][go2xunit]] Jenkins integration
 
 
