@@ -1,5 +1,5 @@
 Testing, Debugging and Profiling
-27 Mar 2013
+23 Apr 2013
 Tags: go test profile debug
 
 Fabrizio Milo, Miki Tebeka
@@ -38,6 +38,115 @@ TBD (Miki)
 
 TBD (Miki)
 
+* GDB
+
+TBD (Fab)
+
+* Gdb Configuration
+
+source runtime-gdb.py
+skip malloc.goc:436
+
+* GDB 7.5 on Mac 
+You need GDB 7.5
+
+You need to sign your GDB
+	gdb --version
+
+If you need to upgrade on OS X, download latest stable release source code from
+	http://sourceware.org/gdb/download/
+
+Unpack and compile:
+	tar xjvf gdb-7.4.tar.bz2
+	cd gdb-7.4
+	less gdb/README
+	./configure
+	make
+
+Create a Certificate
+
+.link http://sourceware.org/gdb/wiki/BuildingOnDarwin
+
+Run it 
+	codesign -s gdb-cert /path/to/my/new/gdb
+
+	go build -gcflags "-N -l" gdbsandbox.go
+
+- you can build a development version of dependent pkgs.
+
+	go install -a -v -gcflags "-N -l" <pkgs-list>
+
+TBD (Fab)
+
+* import "runtime/debug"
+
+TBD (Fab)
+.link http://golang.org/pkg/runtime/debug/#PrintStack
+
+.link http://golang.org/pkg/runtime/#Stack
+
+	func Stack(buf []byte, all bool) int
+
+Extending Error's interface
+
+.link https://code.google.com/p/biogo/source/browse/errors/errors.go
+
+* GDB Commands
+
+- list
+- list line
+
+- list file.go:line
+- break line
+- break file.go:line
+- disas
+
+* Go Extensions (2)
+
+- bt
+- frame n
+
+- info locals
+- info args
+- p variable
+- whatis variable
+
+- info variables regexp
+
+* Go Extensions (3)
+
+- p var
+- p $len(var)
+- p $dtype(var)
+- iface var
+
+- info goroutines
+- goroutine n cmd
+- help goroutine
+
+
+* GDB  to know
+	$ gdb --args mycode -command 1,2,3
+
+- break lib fun
+	(gdb) b net/http.ListenAndServe
+- You can't call a Go function
+
+	(gdb) call 'main.greet'("hello")
+	infrun.c:5777: internal-error: normal_stop: Assertion `get_frame_type (frame) == DUMMY_FRAME' failed.
+	A problem internal to GDB has been detected,
+	further debugging may prove unreliable.
+	Quit this debugging session? (y or n) y
+
+
+* GDB UI
+- gdb -tui
+- ddd
+- Affinic's
+
+* Hopwatch
+
+.play test-debug-prof/hopwatch.go
 
 * Testing References
 
@@ -45,5 +154,16 @@ TBD (Miki)
 - [[http://golang.org/doc/code.html#Testing][Testing]] section in "How To Write Go Code"
 - [[http://labix.org/gocheck][gocheck]]
 - [[https://bitbucket.org/tebeka/go2xunit][go2xunit]] Jenkins integration
+
+
+* Debugging References
+
+- [[http://golang.org/doc/gdb][gdb]]
+- [[http://www.affinic.com/?page_id=109][Visual GDB Debugger]]
+- [[https://github.com/emicklei/hopwatch][HopWatch]]
+
+
+
+
 
 
