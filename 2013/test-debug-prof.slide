@@ -28,7 +28,7 @@ Fabrizio Milo, Miki Tebeka
 
 * Table Driven Testing
 
-TBD (Miki)
+.code test-debug-prof/table/table_test.go
 
 * Parallel Execution
 
