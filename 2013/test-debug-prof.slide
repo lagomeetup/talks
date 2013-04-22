@@ -36,6 +36,10 @@ TBD (Miki)
 
 * Benchmarks
 
+$ go test -c
+$ ./bytes.test -test.run=XXX -test.bench=Index -test.cpuprofile=cpu.out  //-test.benchtime
+$ go tool pprof bytes.test cpu.out
+
 TBD (Miki)
 
 * GDB
@@ -76,18 +80,49 @@ Run it
 
 	go install -a -v -gcflags "-N -l" <pkgs-list>
 
-TBD (Fab)
+
+Load GDB golang extensions:
+	(gdb)source http://golang.org/src/pkg/runtime/runtime-gdb.py
+
+Let's use gdb on geodns:
+
+	go build -a -v -gcflags "-N -l" github.com/abh/geodns
+
+Breakpoint on module function:
+	(gdb) b main.main
+
+Breakpoint on file line:
+	(gdb) b serve.go:212
+
+How to set an environemnt variable:
+
+	set environment GOGCTRACE=1
+	set environmnet GOMAXPROCS=1
+	set environment GOTRACEBACK=2
+
+How to set arguments:
+
+	set args -port=5300
+
+How to list local variables
+
+	- info locals  // locals only 
+	- info variables  // all variables including globals / static
+	- info args
+	- whatis <variablename>
+	- info variables <regexp>
+	- p <variablename>
+
 
 * import "runtime/debug"
 
-TBD (Fab)
 .link http://golang.org/pkg/runtime/debug/#PrintStack
 
 .link http://golang.org/pkg/runtime/#Stack
 
 	func Stack(buf []byte, all bool) int
 
-Extending Error's interface
+Custom Exceptions: Extending Error's interface
 
 .link https://code.google.com/p/biogo/source/browse/errors/errors.go
 
@@ -106,12 +141,6 @@ Extending Error's interface
 - bt
 - frame n
 
-- info locals
-- info args
-- p variable
-- whatis variable
-
-- info variables regexp
 
 * Go Extensions (3)
 
@@ -147,6 +176,32 @@ Extending Error's interface
 * Hopwatch
 
 .play test-debug-prof/hopwatch.go
+
+
+* Profiling
+
+* Running the Memory Profiler
+
+* Notes
+
+
+in pre Go 1.0 the memory profiler requires that the garbage collection has run at least once.
+To force the GC use runtime.GC() i.e:
+
+    DumpHeapProfile("pre-gc-mem.prof")
+	runtime.GC() // force Garbage Collection
+	DumpHeapProfile("post-gc-mem.prof")
+
+The value of runtime.MemProfileRate is important to tweak as it adjusts the granularity of the stats, the default is to only consider allocations of 512kb or bigger. 
+
+.link http://golang.org/pkg/runtime/#pkg-variables
+
+
+	go tool pprof <Executable> executable.prof
+
+install graphviz
+
+
 
 * Testing References
 
