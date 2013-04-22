@@ -28,11 +28,16 @@ Fabrizio Milo, Miki Tebeka
 
 * Table Driven Testing
 
-.code test-debug-prof/table/table_test.go
+.code test-debug-prof/table/math_test.go
 
 * Parallel Execution
 
-TBD (Miki)
+.code test-debug-prof/parallel/math_test.go
+
+- `time`go`test`
+- `time`go`test`-parallel`2`
+- If you have CPU intensive tests try `go`test`-parallel`2`-cpu`2`
+
 
 * Benchmarks
 
