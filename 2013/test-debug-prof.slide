@@ -34,20 +34,22 @@ Fabrizio Milo, Miki Tebeka
 
 .code test-debug-prof/parallel/math_test.go
 
-- `time`go`test`
-- `time`go`test`-parallel`2`
+- `time`go`test` (~2sec)
+- `time`go`test`-parallel`2` (~1sec)
 - If you have CPU intensive tests try `go`test`-parallel`2`-cpu`2`
 
 
 * Benchmarks
 
+.code test-debug-prof/bench/math_test.go
+
+- `go`test`-bench`'.*'`
+
+
+*====>Fabrizio:*What*is*this?<====*
 $ go test -c
 $ ./bytes.test -test.run=XXX -test.bench=Index -test.cpuprofile=cpu.out  //-test.benchtime
 $ go tool pprof bytes.test cpu.out
-
-TBD (Miki)
-
-* GDB
 
 TBD (Fab)
 
