@@ -20,11 +20,11 @@ Fabrizio Milo, Miki Tebeka
 
 * math.go
 
-.code test-debug-prof/math.go
+.code test-debug-prof/math/math.go
 
 * math_test.go
 
-.code test-debug-prof/math_test.go
+.code test-debug-prof/math/math_test.go
 
 * Table Driven Testing
 
