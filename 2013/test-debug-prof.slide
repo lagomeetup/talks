@@ -207,6 +207,7 @@ The value of runtime.MemProfileRate is important to tweak as it adjusts the gran
 	go tool pprof <Executable> executable.prof
 
 install graphviz
+http://tip.golang.org/cmd/prof/
 
 
 
