@@ -6,6 +6,8 @@ Fabrizio Milo, Miki Tebeka
 @fabmilo 
 @tebeka
 
+* Testing
+
 * Testing Recipe
 
 - Write `test_<module>.go` (discovery based test system)
@@ -24,15 +26,17 @@ Fabrizio Milo, Miki Tebeka
 
 * math_test.go
 
-.code test-debug-prof/math/math_test.go
+.code test-debug-prof/math/math_test.go /START1/,/END1/
+
+.code test-debug-prof/math/math_test.go /START2/,/END2/
 
 * Table Driven Testing
 
-.code test-debug-prof/table/math_test.go
+.code test-debug-prof/table/math_test.go /START1/,/END1/
 
 * Parallel Execution
 
-.code test-debug-prof/parallel/math_test.go
+.code test-debug-prof/parallel/math_test.go /START1/,/END1/
 
 - `time`go`test` (~2sec)
 - `time`go`test`-parallel`2` (~1sec)
@@ -41,47 +45,49 @@ Fabrizio Milo, Miki Tebeka
 
 * Benchmarks
 
-.code test-debug-prof/bench/math_test.go
+.code test-debug-prof/bench/math_test.go /START1/,/END1/
 
 - `go`test`-bench`'.*'`
 
 
-*====>Fabrizio:*What*is*this?<====*
-$ go test -c
-$ ./bytes.test -test.run=XXX -test.bench=Index -test.cpuprofile=cpu.out  //-test.benchtime
-$ go tool pprof bytes.test cpu.out
+* Debugging
 
-TBD (Fab)
-
-* Gdb Configuration
-
-source runtime-gdb.py
-skip malloc.goc:436
 
 * GDB 7.5 on Mac 
-You need GDB 7.5
 
-You need to sign your GDB
-	gdb --version
+- You need GDB 7.5 OS X has a branch of 6.X 
 
-If you need to upgrade on OS X, download latest stable release source code from
+	$gdb --version
+
+	GNU gdb (GDB) 7.5
+	Copyright (C) 2012 Free Software Foundation, Inc.
+	License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+	This is free software: you are free to change and redistribute it.
+	There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+	and "show warranty" for details.
+	This GDB was configured as "x86_64-apple-darwin11.4.2".
+	For bug reporting instructions, please see:
+	<http://www.gnu.org/software/gdb/bugs/>.
+
+* If you need to upgrade on OS X 
+
+- Download latest stable release source code from
 	http://sourceware.org/gdb/download/
 
-Unpack and compile:
+- Unpack and compile:
+
 	tar xjvf gdb-7.4.tar.bz2
 	cd gdb-7.4
 	less gdb/README
 	./configure
 	make
 
-Create a Certificate
+- Sign GDB (more info in the link)
 
 .link http://sourceware.org/gdb/wiki/BuildingOnDarwin
 
-Run it 
-	codesign -s gdb-cert /path/to/my/new/gdb
 
-	go build -gcflags "-N -l" gdbsandbox.go
+* Compiling go programs for debugging
 
 - you can build a development version of dependent pkgs.
 
@@ -89,13 +95,35 @@ Run it
 
 
 Load GDB golang extensions:
+
 	(gdb)source http://golang.org/src/pkg/runtime/runtime-gdb.py
 
-Let's use gdb on geodns:
+* Gdb Configuration
+
+    (gdb)source <go-installation>/src/pkg/runtime/runtime-gdb.py 
+    (gdb)skip malloc.goc:436
+
+you can add commands in your .gdbinit inside your GOPATH
+
+	(GOPATH)$cat .gdbinit
+	source runtime-gdb.py 
+	skip malloc.goc:436
+
+* If GDB is properly configured for go if you read these lines:
+
+.code test-debug-prof/debug/gdbout
+
+
+* Let's use gdb on geodns:
 
 	go build -a -v -gcflags "-N -l" github.com/abh/geodns
 
+.link https://github.com/abh/geodns
+
+* Breakpoints
+
 Breakpoint on module function:
+
 	(gdb) b main.main
 
 Breakpoint on file line:
@@ -207,6 +235,7 @@ The value of runtime.MemProfileRate is important to tweak as it adjusts the gran
 	go tool pprof <Executable> executable.prof
 
 install graphviz
+http://tip.golang.org/cmd/prof/
 
 
 
