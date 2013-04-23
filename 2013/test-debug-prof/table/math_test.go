@@ -9,12 +9,11 @@ func checkMul(t *testing.T, a, b, expected float64) {
 	}
 }
 
-type mulTestCase struct {
+var mulTestCases = []struct {
 	a, b, expected float64
-}
-
-var mulTestCases = []mulTestCase{
-	{1, 2, 2}, {-2, -3, 6},
+}{
+	{1., 2., 2.},
+	{-2., -3., 6.},
 }
 
 func TestMul(t *testing.T) {
