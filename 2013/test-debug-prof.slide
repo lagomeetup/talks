@@ -116,50 +116,56 @@ you can add commands in your .gdbinit inside your GOPATH
 
 * Let's use gdb on geodns:
 
+	mkdir gdbex
+	cd gdbex
+	mkdir bin lib src
+	export GOPATH=`pwd`
+	brew install geoip # OSX
+	yum install geoip-devel # RedHat / CentOs
+	go get github.com/abh/geodns
 	go build -a -v -gcflags "-N -l" github.com/abh/geodns
 
 .link https://github.com/abh/geodns
 
-* Breakpoints
 
-Breakpoint on module function:
+*  Configure Environment
 
-	(gdb) b main.main
-
-Breakpoint on file line:
-	(gdb) b serve.go:212
-
-How to set an environemnt variable:
+- How to set an environemnt variable:
 
 	set environment GOGCTRACE=1
 	set environmnet GOMAXPROCS=1
 	set environment GOTRACEBACK=2
 
-How to set arguments:
+note that we can add these variables to the `.gdbinit` file as well
+
+- How to set arguments:
 
 	set args -port=5300
 
-How to list local variables
 
-	- info locals  // locals only 
-	- info variables  // all variables including globals / static
-	- info args
-	- whatis <variablename>
-	- info variables <regexp>
-	- p <variablename>
+* Breakpoints
 
+- Breakpoint on module function:
 
-* import "runtime/debug"
+	(gdb) b main.main
 
-.link http://golang.org/pkg/runtime/debug/#PrintStack
+- Breakpoint on file line:
 
-.link http://golang.org/pkg/runtime/#Stack
+	(gdb) b serve.go:212
 
-	func Stack(buf []byte, all bool) int
+- Breakpoint on library function
 
-Custom Exceptions: Extending Error's interface
+	(gdb) b net/http.ListenAndServe
 
-.link https://code.google.com/p/biogo/source/browse/errors/errors.go
+* How to inspect variables
+
+- info locals  // locals only 
+- info variables  // all variables including globals / static
+- info args
+- whatis <variablename>
+- info variables <regexp>
+- p <variablename>
+
 
 * GDB Commands
 
@@ -175,10 +181,6 @@ Custom Exceptions: Extending Error's interface
 
 - bt
 - frame n
-
-
-* Go Extensions (3)
-
 - p var
 - p $len(var)
 - p $dtype(var)
@@ -189,12 +191,7 @@ Custom Exceptions: Extending Error's interface
 - help goroutine
 
 
-* GDB  to know
-	$ gdb --args mycode -command 1,2,3
-
-- break lib fun
-	(gdb) b net/http.ListenAndServe
-- You can't call a Go function
+* NOTE: You can't call a Go function
 
 	(gdb) call 'main.greet'("hello")
 	infrun.c:5777: internal-error: normal_stop: Assertion `get_frame_type (frame) == DUMMY_FRAME' failed.
@@ -202,8 +199,10 @@ Custom Exceptions: Extending Error's interface
 	further debugging may prove unreliable.
 	Quit this debugging session? (y or n) y
 
+This is due to the differences on how Go calls a function and the way GDB does
 
-* GDB UI
+* User Interfaces for GDB
+
 - gdb -tui
 - ddd
 - Affinic's
@@ -212,13 +211,37 @@ Custom Exceptions: Extending Error's interface
 
 .play test-debug-prof/hopwatch.go
 
+* Go Manual
+
+- import "runtime/debug"
+
+.link http://golang.org/pkg/runtime/debug/#PrintStack
+
+	func PrintStack()
+
+.link http://golang.org/pkg/runtime/#Stack
+
+	func Stack(buf []byte, all bool) int
+
+- import "runtime"
+
+.link http://golang.org/pkg/runtime/#Breakpoint
+
+	func Breakpoint()
+
+* Example
+
+.code test-debug-prof/debug/break.go
+
+* Custom Exceptions: Extending Error's interface
+
+.link https://code.google.com/p/biogo/source/browse/errors/errors.go
+
 
 * Profiling
-
 * Running the Memory Profiler
 
 * Notes
-
 
 in pre Go 1.0 the memory profiler requires that the garbage collection has run at least once.
 To force the GC use runtime.GC() i.e:
@@ -231,11 +254,11 @@ The value of runtime.MemProfileRate is important to tweak as it adjusts the gran
 
 .link http://golang.org/pkg/runtime/#pkg-variables
 
-
 	go tool pprof <Executable> executable.prof
 
 install graphviz
-http://tip.golang.org/cmd/prof/
+
+.link http://www.graphviz.org/
 
 
 
