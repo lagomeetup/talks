@@ -62,13 +62,14 @@ See [[https://bitbucket.org/tebeka/nrsc/src/tip/nrsc_test.go][nrsc_test.go]]
 
 Help is highly appreciated :)
 
-- Convert nrsc bash script to Go code
+- Convert nrsc bash script to Go code ([[https://bitbucket.org/tebeka/nrsc/issue/2][issue #2]])
     - Make it "go gettable"
-    - Remove external depedency on zip
-- Use `fuse` and provide file system API to resource
+- Remove external depedency on zip ([[https://bitbucket.org/tebeka/nrsc/issue/4][issue #4]])
+    - Windows anyone?
+- Use `fuse` and provide file system API to resource ([[https://bitbucket.org/tebeka/nrsc/issue/3][issue #3]])
     - Simplify a lot of things (LoadTemplate ...)
     - However totally different API
-- Get rid of `Initialize`
+- Get rid of `Initialize` ([[https://bitbucket.org/tebeka/nrsc/issue/5][issue #5]])
     - `loadMap` in `init` does not work
 
 * References
