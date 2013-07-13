@@ -1,0 +1,16 @@
+{
+  "name": "zmq-golang-demo",
+  "version": "0.0.0",
+  "description": "Demo to show nodejs working with go through Ømq",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "node index.js"
+  },
+  "repository": "",
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+    "zmq": "~2.4.0"
+  }
+}
