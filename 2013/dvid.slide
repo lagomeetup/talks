@@ -1,0 +1,73 @@
+DVID
+Distributed, Versioned, Image-Related Datastore
+Tags: go
+
+http://github.com/janelia-flyem/dvid
+
+Bill Katz
+Senior Software Engineer, Janelia Farm Research Center
+billkatz@gmail.com
+
+* The FlyEM Project at Janelia Farm
+- Employ electron microscopes to capture nanometer-resolution images of brains.
+- Segment the image volume so we can see the neurons.
+- Reconstruct the neural circuit, the connectome.
+- [Show TEM process movie]
+.image dvid/flyem_avatar_300x300.png
+
+* DVID is Versioned
+- Each node in a DAG represents a version of an image volume.
+- Use a UUID for each node so works in distributed system.
+.image dvid/versioning.png
+
+* DVID will be Distributed
+- Inspired by git and other distributed versioning systems.
+- Will support clone/push/pull via Go RPC
+.image dvid/distributed.png
+
+* DVID handles Image-Related Data
+- Comes with a "voxels" data type that supports grayscale, labels, and RGB images.
+- Can reconstruct portions of an image volume in XY, XZ, and YZ orientation.
+- [Demo web app that uses DVID backend]
+
+* DVID Architecture (still evolving)
+.image dvid/dvid_architecture.png
+
+* DVID abstracts storage engines
+- Uses Google's leveldb by default via the [[https://github.com/jmhodges/levigo][levigo Go driver]]
+- Key-value datastores are plentiful (couchbase, mongo-db, etc).
+- Currently uses a storage interface
+.code dvid/dvid.go /START_STORAGE/,/END_STORAGE/
+
+* Uses conditional compilation for selecting backend
+- Build using "go build -tags 'levigo' dvid.go"
+.code dvid/dvid.go /START_CONDITIONAL/,/END_CONDITIONAL/
+- All Go dependencies are kept in a repo: github.com/janelia-flyem/go
+
+* Importing DVID data types
+.code dvid/dvid.go  /START_IMPORT/,/END_IMPORT/
+- Each Datatype registers itself at compile time:
+.code dvid/dvid.go  /START_REGISTER/,/END_REGISTER/
+
+* Datatypes are user-defined
+.code dvid/dvid.go /START_DATATYPE/,/END_DATATYPE/
+- A Dataset is an instantiation of a Datatype
+    % dvid dataset mygrayscale grayscale8
+
+* Datasets, like Datatypes, fulfill an interface 
+.code dvid/dvid.go /START_DATASET/,/END_DATASET/
+
+* Example: Voxels Datatype
+.image dvid/chunks_to_db.png
+
+* What happens if two simultaneous PUT images cross at a chunk?
+.image dvid/chunkmap.png 
+
+* What happens during an image request?
+.code dvid/dvid.go  /START_GET/,/END_GET/
+
+* Sending each chunk to a datatype-specific handler
+.code dvid/dvid.go  /START_MAP/,/END_MAP/
+
+* Creating an iterator for a volume
+.code dvid/dvid.go  /START_ITERATOR/,/END_ITERATOR/
