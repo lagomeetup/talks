@@ -3,6 +3,7 @@ To View Online this Presentation go to:
 
 2013
 ----
+* http://talks.godoc.org/github.com/lagomeetup/talks/2013/dvid.slide
 * http://talks.godoc.org/github.com/lagomeetup/talks/2013/nrsc.slide
 * http://talks.godoc.org/github.com/lagomeetup/talks/2013/test-debug-prof.slide
 * http://talks.godoc.org/github.com/lagomeetup/talks/2013/import-c.slide
