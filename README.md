@@ -38,6 +38,13 @@ You can Install gozmq by running:
 By sending the arguments `-tags zmq_3_x `, you are telling go to build zmq
 for version 3.x instead of 2.x.
 
+### Note for OS X users
+
+You will need to make sure you have pkg-config installed to `go get` zeromq.
+If you are using MacPorts you can run:
+
+`$ sudo port install pkgconfig`
+
 ## Install zeromq for node.js
 
 I'm using the zmq package from npm. To install the dependencies for the node
