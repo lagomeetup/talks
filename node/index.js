@@ -3,7 +3,6 @@ var zmq = require('zmq');
 sock = zmq.socket('req');
 
 sock.connect('tcp://127.0.0.1:5000');
-sock.connect('tcp://127.0.0.1:6000');
 
 var count = 0;
 setInterval(function(){
