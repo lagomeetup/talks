@@ -58,9 +58,9 @@ Use `Ctrl+C` to exit.
 
 ```bash
 $ # Go to server directory
-$ cd go/server
+$ cd go/rep-server
 $ go build
-$ ./server
+$ ./rep-server
 ```
 
 ## Build Go Client
@@ -69,9 +69,9 @@ Use `Ctrl+C` to exit.
 
 ```bash
 $ # Go to client directory
-$ cd go/client/
+$ cd go/req-client/
 $ go build
-$ ./client
+$ ./req-client
 ```
 
 ## Build Node Client
