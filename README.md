@@ -3,17 +3,17 @@ To View Online this Presentation go to:
 
 2013
 ----
-* http://talks.godoc.org/github.com/lagomeetup/talks/2013/dvid.slide
-* http://talks.godoc.org/github.com/lagomeetup/talks/2013/nrsc.slide
-* http://talks.godoc.org/github.com/lagomeetup/talks/2013/test-debug-prof.slide
-* http://talks.godoc.org/github.com/lagomeetup/talks/2013/import-c.slide
-* http://talks.godoc.org/github.com/lagomeetup/talks/2013/go-stdlib-part3-reflection.slide
-* http://talks.godoc.org/github.com/lagomeetup/talks/2013/go-stdlib-part2-io-concurrency.slide
+* [DVID](http://talks.godoc.org/github.com/lagomeetup/talks/2013/dvid.slide)
+* [nsrsc](http://talks.godoc.org/github.com/lagomeetup/talks/2013/nrsc.slide)
+* [Uncomment Your Code](https://docs.google.com/presentation/d/1iiPWo1zJRkk8siX-Yj1qwDSu9WWjbJkOJEBn9XjP18Q/pub?start=false&loop=false&delayms=3000)
+* [Testing, Debugging and Profiling](http://talks.godoc.org/github.com/lagomeetup/talks/2013/test-debug-prof.slide)
+* [import "C"](http://talks.godoc.org/github.com/lagomeetup/talks/2013/import-c.slide)
+* [stdlib part 3 - reflection](http://talks.godoc.org/github.com/lagomeetup/talks/2013/go-stdlib-part3-reflection.slide)
+* [stdlib part 2 - io & concurrency](http://talks.godoc.org/github.com/lagomeetup/talks/2013/go-stdlib-part2-io-concurrency.slide)
 
 2012
 ----
-* http://talks.godoc.org/github.com/lagomeetup/talks/2012/go-stdlib-part-1-io.slide
-
+* [stdlib part 1 - io](http://talks.godoc.org/github.com/lagomeetup/talks/2012/go-stdlib-part-1-io.slide)
 
 How to View the Presentation
 ============================
@@ -44,4 +44,4 @@ The example should be fully functional.
 
 Enjoy!!
 
-*The Los Angeles Go Meetup Team*
+[*The Los Angeles Go Meetup Team*](http://www.meetup.com/Los-Angeles-Gophers/)
