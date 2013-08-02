@@ -5,7 +5,8 @@ var http = require('http'),
 
 var pull = zmq.socket('pull'),
     app = http.createServer(handler),
-    io = socketio.listen(app);
+    io = socketio.listen(app),
+    messages = ['Welcome!'];
 
 function handler(req, res) {
   fs.readFile(__dirname + '/index.html', function (err, data) {
@@ -20,19 +21,25 @@ function handler(req, res) {
   });
 }
 
-pull.bind('tcp://127.0.0.1:4000', function () {
-  app.listen(8888);
+pull.bind('tcp://127.0.0.1:4000');
 
-  pull.on('message', console.log)
+app.listen(8888);
 
-  io.sockets.on('connection', function (socket) {
-    socket.emit('news', { message: 'Welcome!' });
-    pull.on('message', function (msg) {
-      console.log(msg.toString());
-      socket.emit('news', { message: msg.toString() });
-    });
-    socket.on('my other event', function (data) {
-      console.log(data);
-    });
+pull.on('message', function(msg) {
+  messages.push(msg.toString());
+});
+
+io.sockets.on('connection', function (socket) {
+  function emitMessage (msg) {
+    socket.emit('news', { message: msg });
+  }
+  messages.forEach(emitMessage);
+  pull.on('message', function (msg) {
+    console.log(msg.toString());
+    emitMessage(msg.toString());
+  });
+  socket.on('my other event', function (data) {
+    console.log(data);
   });
 });
+
