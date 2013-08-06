@@ -6,19 +6,13 @@ var http = require('http'),
 var pull = zmq.socket('pull'),
     app = http.createServer(handler),
     io = socketio.listen(app),
+    indexHtml = fs.readFileSync(__dirname + '/index.html'),
     messages = ['Welcome!'];
 
 function handler(req, res) {
-  fs.readFile(__dirname + '/index.html', function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-
-    res.setHeader('Content-Type', 'text/html');
-    res.writeHead(200);
-    res.end(data);
-  });
+  res.setHeader('Content-Type', 'text/html');
+  res.writeHead(200);
+  res.end(indexHtml);
 }
 
 pull.bind('tcp://127.0.0.1:4000');
