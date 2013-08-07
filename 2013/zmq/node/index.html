@@ -17,7 +17,7 @@
     var $log = $('#log');
     socket.on('news', function (data) {
       $log.prepend('<tr><td>' + data.message + '</' + 'td></' + 'td>');
-      socket.emit('my other event', { my: 'data' });
+      socket.emit('event from browser', { got: data });
     });
   }());
 </script>

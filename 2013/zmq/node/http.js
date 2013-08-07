@@ -5,8 +5,9 @@ var http = require('http'),
 
 var pull = zmq.socket('pull'),
     app = http.createServer(handler),
-    io = socketio.listen(app),
-    indexHtml = fs.readFileSync(__dirname + '/index.html'),
+    io = socketio.listen(app);
+
+var indexHtml = fs.readFileSync(__dirname + '/index.html'),
     messages = ['Welcome!'];
 
 function handler(req, res) {
@@ -32,7 +33,7 @@ io.sockets.on('connection', function (socket) {
     console.log(msg.toString());
     emitMessage(msg.toString());
   });
-  socket.on('my other event', function (data) {
+  socket.on('event from browser', function (data) {
     console.log(data);
   });
 });

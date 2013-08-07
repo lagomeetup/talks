@@ -1,12 +1,16 @@
 var zmq = require('zmq');
 
-sock = zmq.socket('req');
+var sock = zmq.socket('req');
 
 sock.connect('tcp://127.0.0.1:5000');
 
+sock.on('message', function (data) {
+  console.log('Got', data + '')
+});
+
 var count = 0;
 setInterval(function(){
-  console.log('sending work: ' + count);
+  console.log('Sending', count);
   sock.send(count);
   count += 1;
 }, 100);
