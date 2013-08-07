@@ -4,7 +4,9 @@ import zmq "github.com/alecthomas/gozmq"
 
 func main() {
 	context, _ := zmq.NewContext()
+	defer context.Close()
 	socket, _ := context.NewSocket(zmq.REP)
+	defer socket.Close()
 	socket.Bind("tcp://127.0.0.1:5000")
 
 	for {
