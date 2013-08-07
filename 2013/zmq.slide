@@ -1,0 +1,120 @@
+Using Go with ØMQ
+7 Aug 2013
+Tags: go ØMQ zmq ZeroMQ node nodejs golang
+
+Buddy Sandidge
+Software Engineer
+buddy.sandidge@gmail.com
+
+* Who is this guy?
+.image zmq/assets/buddy.jpg
+*Me!* ☝
+
+* Who is this guy?
+- Full stack programmer
+- Polyglot — JavaScript, Python, Go, C/C++, PHP (to pay the bills)
+- Strong front end background
+- Spent a lot of time dealing with web browsers
+
+* Why should we listen to him?
+
+* Don't
+
+* What is ØMQ?
+
+* What is ØMQ?
+.link http://zguide.zeromq.org/page:all#-MQ-in-a-Hundred-Words ØMQ - The Guide
+
+"ØMQ (also seen as ZeroMQ, 0MQ, zmq) looks like an embeddable networking
+library but acts like a concurrency framework. It gives you sockets that carry
+atomic messages across various transports like in-process, inter-process, TCP,
+and multicast. You can connect sockets N-to-N with patterns like fanout,
+pub-sub, task distribution, and request-reply. It's fast enough to be the
+fabric for clustered products. Its asynchronous I/O model gives you scalable
+multicore applications, built as asynchronous message-processing tasks. It has
+a score of language APIs and runs on most operating systems. ØMQ is from
+iMatix and is LGPLv3 open source."
+
+* What is ØMQ?
+"It's sockets done right."
+
+* It's all about communication
+- In-process communication
+    socket.Connect("inproc://publisher")
+- Inter-process communication
+    socket.Connect("ipc:///tmp/feeds/0")
+- TCP sockets
+    socket.Connect("tcp://127.0.0.1:5000")
+
+* Types of sockets
+- Request/Response
+- Publish/Subscribe
+- Push/Pull
+- Dealer/Router
+
+* Echo server
+.code zmq/go/rep-server/main.go
+
+* Echo client
+.code zmq/go/req-client/main.go
+
+* Demo
+# After you install ØMQ and the Go bindings
+#
+# $ cd zmq/go/rep-server/
+# $ go build
+# $ ./rep-server
+# $ # in a separate tab, or something
+# $ cd zmq/go/req-client/
+# $ go build
+# $ ./req-client & ./req-client &
+
+* Use another language
+.code zmq/node/req-client.js
+
+* Demo
+
+* Flaky echo server
+.code zmq/go/rep-server-crashy/main.go
+
+* Demo
+# Close ./rep-server
+#
+# $ cd zmq/go/rep-server-crashy/
+# $ go build
+# $ ./rep-server-crashy
+#
+# In the tab with the ./req-client
+# ./req-client
+
+* What happened?
+- Request/response is blocking
+- Server crashed before sending response
+- New server has no knowledge of the previous state
+- Clients never send out the next request without the response
+
+* Go and socket.io
+
+* zmq/go/broadcast/main.go
+.code zmq/go/broadcast/main.go
+
+* zmq/node/http.js (1)
+.code zmq/node/http.js /^var http/,/^}/
+
+* zmq/node/http.js (2)
+.code zmq/node/http.js /^pull.bind/,/^  }\);\n}\);/
+
+* zmq/node/index.html
+.code zmq/node/index.html /^<div/,/^<\/script>/
+
+# $ cd zmq/node && node http.js
+# Another tab
+# $ cd zmq/go/broadcast/
+# $ go build
+# $ ./broadcast Hello LA Gophers!
+# $ ./broadcast <strong>xss yo</strong>
+# $ ./broadcast "<script>alert('xss')</script>"
+# $ ./broadcast '<img src="data:image/jpeg;base64,'`base64 ../../assets/buddy.jpg`'"/>'
+* zmq/node/index.html
+.iframe http://localhost:8888 300 600
+
