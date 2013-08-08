@@ -3,6 +3,8 @@ To View Online this Presentation go to:
 
 2013
 ----
+* [ØMQ](http://talks.godoc.org/github.com/lagomeetup/talks/2013/zmq.slide)
+* [Best Practices](http://talks.golang.org/2013/bestpractices.slide)
 * [DVID](http://talks.godoc.org/github.com/lagomeetup/talks/2013/dvid.slide)
 * [nsrsc](http://talks.godoc.org/github.com/lagomeetup/talks/2013/nrsc.slide)
 * [Uncomment Your Code](https://docs.google.com/presentation/d/1iiPWo1zJRkk8siX-Yj1qwDSu9WWjbJkOJEBn9XjP18Q/pub?start=false&loop=false&delayms=3000)
