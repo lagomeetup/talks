@@ -3,6 +3,8 @@ To View Online this Presentation go to:
 
 2013
 ----
+* [Whishpering Gophers](http://whispering-gophers.appspot.com/talk.slide#1)
+  workshop
 * [ØMQ](http://talks.godoc.org/github.com/lagomeetup/talks/2013/zmq.slide)
 * [Best Practices](http://talks.golang.org/2013/bestpractices.slide)
 * [DVID](http://talks.godoc.org/github.com/lagomeetup/talks/2013/dvid.slide)
