@@ -9,6 +9,8 @@ To View Online this Presentation go to:
 * [Best Practices](http://talks.golang.org/2013/bestpractices.slide)
 * [DVID](http://talks.godoc.org/github.com/lagomeetup/talks/2013/dvid.slide)
 * [nsrsc](http://talks.godoc.org/github.com/lagomeetup/talks/2013/nrsc.slide)
+* [Writing a file system in Go](http://bazil.org/talks/2013-06-10-la-gophers/)
+  / [bazil.org/fuse](http://bazil.org/fuse/): a pure-Go FUSE library
 * [Uncomment Your Code](https://docs.google.com/presentation/d/1iiPWo1zJRkk8siX-Yj1qwDSu9WWjbJkOJEBn9XjP18Q/pub?start=false&loop=false&delayms=3000)
 * [Testing, Debugging and Profiling](http://talks.godoc.org/github.com/lagomeetup/talks/2013/test-debug-prof.slide)
 * [import "C"](http://talks.godoc.org/github.com/lagomeetup/talks/2013/import-c.slide)
