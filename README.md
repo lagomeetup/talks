@@ -3,6 +3,8 @@ To View Online this Presentation go to:
 
 2013
 ----
+* [Tv's projects](http://eagain.net/talks/go-projects-2013/),
+  dig through Tv's Github to discover all kinds of smaller projects
 * [Whispering Gophers](http://whispering-gophers.appspot.com/talk.slide#1)
   workshop
 * [ØMQ](http://talks.godoc.org/github.com/lagomeetup/talks/2013/zmq.slide)
