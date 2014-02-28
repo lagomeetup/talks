@@ -46,7 +46,7 @@ From their GitHub page:
 * The most boring webapp ever
 
 Code and slides are in the on GitHub
-https://github.com/xbudex/talks/tree/master/2014/gorilla
+https://github.com/lagomeetup/talks/tree/master/2014/gorilla
 
 Entry point for application
 
@@ -56,7 +56,7 @@ Entry point for application
 
 The template being used
 
-.code gorilla/assets/templates/index.html /<body>/,/<\/body>/
+.code gorilla/assets/templates/index.html /<body>/,/<\/div>/
 
 * The most boring webapp ever
 
@@ -69,8 +69,6 @@ Using the template
 A way to associate an http request with a http handler.
 
 .code gorilla/mux.go /^func router/,/^}/
-# curl -X "GET" -H "X-Api-Version: 1"  http://localhost:4000/api/v1/foo/123
-#{"SomeId":"123"}
 
 * Mux Basic Example
 
@@ -95,7 +93,6 @@ Have a form to POST to /foo/new
 
 .code gorilla/mux.go /NewFooHandler/
 .code gorilla/mux.go /func NewFooHandler/,/^}/
-.iframe http://localhost:4000/foo 300 600
 
 * Mux with Headers
 
@@ -124,3 +121,136 @@ Can also limit requests by:
 
 .code gorilla/mux.go /http.Handle/,/http.FileServer/
 
+* Schema
+
+- Convert a form post data (map[string][]string) into some data structure
+- Supports basic types (int, float, string, etc)
+- Supports nested data structures
+- Supports slices of data
+- Tag to keep name of data structure separate from html
+
+* Schema Basic example
+
+The data
+
+.code gorilla/mux.go /type Foo struct/,/^}/
+
+* Schema Basic example
+
+The HTML
+
+.code gorilla/assets/templates/index.html /foo\/new/,/<\/form>/
+
+* Schema Basic example
+
+The code
+
+.code gorilla/mux.go /func NewFooHandler/,/^}/
+
+* Schema more complex example
+
+The data structure
+
+.code gorilla/mux.go /type Phone struct/,/^} \/\//
+
+* Schema more complex example
+
+The markup
+
+.code gorilla/assets/templates/index.html /contact\/new/,/<\/form>/
+
+* Schema more complex example
+
+Dynamic fields
+
+.code gorilla/assets/js/main.js /var \$addPhone/,/}\)\);/
+
+* Schema more complex example
+
+HTTP Handler
+
+.code gorilla/mux.go /func NewConctactHandler/,/^}/
+
+* Lightning round
+
+Secure Cookie
+
+- Can sign cookies
+- Can encrypt cookies
+- Uses AES-128, AES-192, or AES-256.
+
+* Lightning round
+
+Send secure cookie (ignoring errors)
+
+  var hashKey = []byte("very-secret")
+  var blockKey = []byte("a-lot-secret")
+  var s = securecookie.New(hashKey, blockKey)
+
+  encoded, _ := s.Encode("cookie-name", value)
+  cookie := &http.Cookie{
+  	Name:  "cookie-name",
+  	Value: encoded,
+  	Path:  "/",
+  }
+  http.SetCookie(w, cookie)
+
+
+* Lightning round
+
+Read secure cookie (ignoring errors)
+
+  cookie, _ := r.Cookie("cookie-name")
+  value := make(map[string]string)
+  s.Decode("cookie-name", cookie.Value, &value)
+  fmt.Fprintf(w, "The value of foo is %q", value["foo"])
+
+* Lightning round
+
+Context
+
+- A global variable for a request
+- Needs to be cleared by request to avoid memory leaks
+- A glorified global variable
+
+* Lightning round
+
+Context
+
+  var (
+  	mutex sync.Mutex
+  	data  = make(map[*http.Request]map[interface{}]interface{})
+  	datat = make(map[*http.Request]int64)
+  )
+
+* Lightning round
+
+Context
+
+  context.Set(request, 123, "bar")
+
+  // in some other code anywhere in the application:
+  val := context.Get(request, 123)
+  // or
+  val, ok := context.GetOk(request, 123)
+
+* Lightning round
+
+Watch out for memory leaks
+
+- Either clear the request manually
+  context.Clear(request)
+- Clear request as part of http handler
+  func ClearHandler(h http.Handler) http.Handler {
+  	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+  		defer Clear(r)
+  		h.ServeHTTP(w, r)
+  	})
+  }
+- Clear request with a max age
+  context.Purge(maxAge int)
+
+* Honorable mentions
+
+- websocket
+- sessions
