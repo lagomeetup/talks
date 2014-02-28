@@ -1,6 +1,10 @@
 To View Online this Presentation go to:
 =======================================
 
+2014
+----
+* [Gorilla](http://talks.godoc.org/github.com/lagomeetup/talks/2014/gorilla.slide)
+
 2013
 ----
 * [DVID](http://talks.godoc.org/github.com/lagomeetup/talks/2013/dvid.slide)
