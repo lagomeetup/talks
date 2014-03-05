@@ -1,0 +1,256 @@
+Gorilla Web Toolkit
+27 Feb 2014
+Tags: go golang gorilla web framework
+
+Buddy Sandidge
+Big Data Engineer
+buddy.sandidge@convertro.com
+
+* Who is this guy?
+- Full stack programmer, generalist, maker/hacker
+- Polyglot — JavaScript, Python, Go, C/C++, PHP (not so much anymore)
+- Not associated with Gorilla in any way
+- Work for Convertro — big data, marketing analytics company
+.link http://www.convertro.com/about-us/careers/ We are hiring ☺
+
+* What is Gorilla?
+
+Gorilla is a collection of idiomatic Go libraries that implement common design
+patterns for writing http servers.
+
+- Web Toolkit
+- Not a framework
+
+From the FAQ:
+Q: Is Gorilla a framework?
+A: No, it is a toolkit. Just use what you need with your favorite framework or
+the http package.
+
+* What does it offer?
+
+From their GitHub page:
+- URL routing (mux)
+- WebSockets (websocket)
+- Sessions (sessions)
+- JSON-RPC (rpc)
+- Form to struct parser (schema)
+- HTTP Client (http)
+- Secure Cookie support (securecookie)
+- Per request variables (context )
+- RSS/Atom (feeds)
+- Template (template)
+- HTTP handler helpers (handlers)
+- URL regex reversal (reverse)
+- Internationalization (i18n)
+
+* The most boring webapp ever
+
+Code and slides are in the on GitHub
+https://github.com/lagomeetup/talks/tree/master/2014/gorilla
+
+Entry point for application
+
+.code gorilla/main.go /var addr string/,/^} \/\//
+
+* The most boring webapp ever
+
+The template being used
+
+.code gorilla/assets/templates/index.html /<body>/,/<\/div>/
+
+* The most boring webapp ever
+
+Using the template
+
+.code gorilla/mux.go /var index/,/^}/
+
+* Mux
+
+A way to associate an http request with a http handler.
+
+.code gorilla/mux.go /^func router/,/^}/
+
+* Mux Basic Example
+
+Basic example only using path
+
+.code gorilla/mux.go /"\/foo"/
+.code gorilla/mux.go /func FooHandler/,/^}/
+
+* Mux Basic Example
+
+http://localhost:4000/foo
+
+.iframe http://localhost:4000/foo 300 600
+
+* Mux with form
+
+Have a form to POST to /foo/new
+
+.code gorilla/assets/templates/index.html /<form/,/<\/form/
+
+* Mux with form
+
+.code gorilla/mux.go /NewFooHandler/
+.code gorilla/mux.go /func NewFooHandler/,/^}/
+
+* Mux with Headers
+
+.code gorilla/mux.go /APIHandler/,/"1"/
+.code gorilla/mux.go /func APIHandler/,/^}/
+
+ $ curl -X "GET" -H "X-Api-Version: 1"  http://localhost:4000/api/v1/foo/123
+ {"SomeId":"123"}
+
+* More Mux
+
+- Can get reversed urls
+- Can use sub-routers
+
+Can also limit requests by:
+
+- Schemes (https, http, etc)
+- Host
+- Queries
+- By a custom matcher function
+
+* Mux pitfall
+
+- Need router object to reverse URLs
+- Couldn't find a way to have a wild card/catchall handler, can't say '/static/*'
+
+.code gorilla/mux.go /http.Handle/,/http.FileServer/
+
+* Schema
+
+- Convert a form post data (map[string][]string) into some data structure
+- Supports basic types (int, float, string, etc)
+- Supports nested data structures
+- Supports slices of data
+- Tag to keep name of data structure separate from html
+
+* Schema Basic example
+
+The data
+
+.code gorilla/mux.go /type Foo struct/,/^}/
+
+* Schema Basic example
+
+The HTML
+
+.code gorilla/assets/templates/index.html /foo\/new/,/<\/form>/
+
+* Schema Basic example
+
+The code
+
+.code gorilla/mux.go /func NewFooHandler/,/^}/
+
+* Schema more complex example
+
+The data structure
+
+.code gorilla/mux.go /type Phone struct/,/^} \/\//
+
+* Schema more complex example
+
+The markup
+
+.code gorilla/assets/templates/index.html /contact\/new/,/<\/form>/
+
+* Schema more complex example
+
+Dynamic fields
+
+.code gorilla/assets/js/main.js /var \$addPhone/,/}\)\);/
+
+* Schema more complex example
+
+HTTP Handler
+
+.code gorilla/mux.go /func NewConctactHandler/,/^}/
+
+* Lightning round
+
+Secure Cookie
+
+- Can sign cookies
+- Can encrypt cookies
+- Uses AES-128, AES-192, or AES-256.
+
+* Lightning round
+
+Send secure cookie (ignoring errors)
+
+  var hashKey = []byte("very-secret")
+  var blockKey = []byte("a-lot-secret")
+  var s = securecookie.New(hashKey, blockKey)
+
+  encoded, _ := s.Encode("cookie-name", value)
+  cookie := &http.Cookie{
+  	Name:  "cookie-name",
+  	Value: encoded,
+  	Path:  "/",
+  }
+  http.SetCookie(w, cookie)
+
+
+* Lightning round
+
+Read secure cookie (ignoring errors)
+
+  cookie, _ := r.Cookie("cookie-name")
+  value := make(map[string]string)
+  s.Decode("cookie-name", cookie.Value, &value)
+  fmt.Fprintf(w, "The value of foo is %q", value["foo"])
+
+* Lightning round
+
+Context
+
+- A global variable for a request
+- Needs to be cleared by request to avoid memory leaks
+- A glorified global variable
+
+* Lightning round
+
+Context
+
+  var (
+  	mutex sync.Mutex
+  	data  = make(map[*http.Request]map[interface{}]interface{})
+  	datat = make(map[*http.Request]int64)
+  )
+
+* Lightning round
+
+Context
+
+  context.Set(request, 123, "bar")
+
+  // in some other code anywhere in the application:
+  val := context.Get(request, 123)
+  // or
+  val, ok := context.GetOk(request, 123)
+
+* Lightning round
+
+Watch out for memory leaks
+
+- Either clear the request manually
+  context.Clear(request)
+- Clear request as part of http handler
+  func ClearHandler(h http.Handler) http.Handler {
+  	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+  		defer Clear(r)
+  		h.ServeHTTP(w, r)
+  	})
+  }
+- Clear request with a max age
+  context.Purge(maxAge int)
+
+* Honorable mentions
+
+- websocket
+- sessions

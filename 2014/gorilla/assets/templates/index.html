@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{.Title}}</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/assets/css/bootstrap.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>{{.Title}}</h1>
+      <p>{{.Body}}</p>
+    </div>
+    <div class="btn btn-default" id="simple-link">New Foo Form</div>
+    <div class="nope" id="simple">
+      <form action="/foo/new" method="POST">
+        <div class="input-group">
+          <input type="text" name="value" class="form-control"/>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Make a new foo</button>
+          </span>
+        </div>
+      </form>
+    </div>
+    <hr/>
+    <div class="btn btn-default" id="complex-link">New Complex Form</div>
+    <div class="nope" id="complex">
+      <form action="/contact/new" method="POST">
+        <div class="input-group">
+          <div class="form-group">
+            <input type="text" name="Name" class="form-control" placeholder="name">
+          </div>
+          <div id="phone" class="form-group">
+            <input type="text" name="Phone.0.Number" class="form-control" placeholder="phone number">
+            <input type="text" name="Phone.0.Kind" class="form-control" placeholder="phone type">
+          </div>
+          <button id="add-phone" class="btn btn-default">Add Phone</button>
+          <button class="btn btn-default" type="submit">New Contact</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="/assets/js/jquery-2.1.0.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>
