@@ -3,6 +3,7 @@ To View Online this Presentation go to:
 
 2014
 ----
+* [An Instant Messaging Service in Go](http://talks.godoc.org/github.com/thelinuxkid/schlepper/talk/schlepper.slide)
 * [Gorilla](http://talks.godoc.org/github.com/lagomeetup/talks/2014/gorilla.slide)
 
 2013
